@@ -43,10 +43,14 @@ const userSchema = new mongoose.Schema({
     },
     gender:{
         type:String,
-        validate(value){
-            if(!["Male", "Female", "Other"].includes(value)){
-                throw new Error("Gender must be Male, Female or Other");  //case sensitive
-        }}
+        enum: {
+            values: ["Male", "Female", "Other"],
+            message: '{VALUE} is not supported'
+        }
+        // validate(value){
+        //     if(!["Male", "Female", "Other"].includes(value)){
+        //         throw new Error("Gender must be Male, Female or Other");  //case sensitive
+        // }}
     },
     photoUrl: {
         type: String,
@@ -64,6 +68,8 @@ const userSchema = new mongoose.Schema({
 {
     timestamps: true,
 });
+//compound index
+userSchema.index({firstName: 1, lastName: 1});
 
 //method for jwt token generation
 userSchema.methods.getJWT = async function() {
