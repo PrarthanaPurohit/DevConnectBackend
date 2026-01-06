@@ -1,6 +1,7 @@
 const express = require('express');
 const userRouter = express.Router();
 const { userAuth } = require('../middleware/auth');
+const User = require("../models/user.js");
 
 const ConnectionRequestModel = require("../models/connectionRequest.js")
 
@@ -52,6 +53,45 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         res.status(400).send("Error: " + err.message);
     }       
 });
+
+
+//Feed api
+userRouter.get("/user/feed", userAuth, async (req,res) => {
+    try{
+        const loggedInUser = req.user;
+
+        // avoid self, connections- ignored, pending req, rejected, accepted
+        
+        //find all connection req user sent or received
+        const connectionRequests = await ConnectionRequestModel.find({
+            $or: [
+                {fromUserId: loggedInUser._id},
+                {toUserId: loggedInUser._id}
+            ]
+        }).select("fromUserId toUserId status -_id");
+
+        const hideUsersFromFeed = new Set(); //repetition not allowed in set
+        connectionRequests.forEach((req) => {
+            hideUsersFromFeed.add(req.fromUserId.toString());
+            hideUsersFromFeed.add(req.toUserId.toString());
+        });
+
+        //find other users not in hideUsersFromFeed & yourself
+        const feedUsers = await User.find({
+            $and: [
+                { _id: { $nin: Array.from(hideUsersFromFeed)}},
+                { _id: { $ne: loggedInUser._id }}
+        ]
+            
+        }).select("firstName lastName age gender photoUrl about");
+
+        res.send(feedUsers);
+            
+    }
+    catch(err){
+        res.status(500).send("Error: " + err.message);
+    }
+})
 
 
 
