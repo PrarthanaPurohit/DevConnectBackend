@@ -2,7 +2,7 @@ const express = require("express");
 const authRouter = express.Router();
 const cookieParser = require("cookie-parser");
 authRouter.use(cookieParser());
-const validateSignUpData = require("../utils/validation");
+const {validateSignUpData} = require("../utils/validation");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 
