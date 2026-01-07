@@ -12,7 +12,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
         const connectionRequests = await ConnectionRequestModel.find({
             toUserId: loggedInUser._id,
             status: "interested"
-        }).populate('fromUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about"]);  //using ref
+        }).populate('fromUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about", "skills"]);  //using ref
         res.json({
             message: "Connection requests found",
             data: connectionRequests
@@ -32,8 +32,8 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
                 { toUserId: loggedInUser._id, status: "accepted" }
             ]
         })
-        .populate('fromUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about"])
-        .populate('toUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about"]);  //using ref;
+        .populate('fromUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about", "skills"])
+        .populate('toUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about", "skills"]);  //using ref;
 
         //get only the connected user's info
         const data = connectionRequests.map((row) => {
@@ -89,7 +89,7 @@ userRouter.get("/user/feed", userAuth, async (req,res) => {
                 { _id: { $ne: loggedInUser._id }}
         ]
             
-        }).select("firstName lastName age gender photoUrl about")  //protect sensitive info
+        }).select("firstName lastName age gender photoUrl about skills")  //protect sensitive info
         .skip(skip).limit(limit);  //pagination
 
         res.json({data: feedUsers});
