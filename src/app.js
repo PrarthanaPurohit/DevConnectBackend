@@ -1,7 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
-app.use(express.json()); //parsing json request body
+
 const cors = require("cors");
 
 const authRouter = require("./routes/auth");
@@ -11,8 +11,16 @@ const userRouter = require("./routes/user");
 
 //check withing every route one by one
 app.use(cors(
-  {origin: "http://localhost:5173", credentials: true}
+  {origin: "http://localhost:5173", credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type","Authorization"]
+  }
 ));
+app.use(express.json()); //parsing json request body
+
+
+
+
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
