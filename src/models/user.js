@@ -74,7 +74,7 @@ userSchema.index({firstName: 1, lastName: 1});
 //method for jwt token generation
 userSchema.methods.getJWT = async function() {
     const user = this; //don't work with arrow func
-    const token = await jwt.sign({_id: user._id }, "mySecretkey7777", {expiresIn: "1d"});
+    const token = await jwt.sign({_id: user._id }, process.env.JWT_SECRET, {expiresIn: "1d"});
     return token;
 }
 
