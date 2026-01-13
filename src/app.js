@@ -11,18 +11,19 @@ const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
 
 //check withing every route one by one
-app.use(cors(
-  {origin: "https://dev-connect-frontend-theta.vercel.app", credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type","Authorization"]
+
+
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
+// ✅ SAFE preflight handler (NO ROUTE BREAK)
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
   }
-));
-app.options("*", cors());
-
-app.use(express.json()); //parsing json request body
-
-
-
+  next();
+});
 
 
 
