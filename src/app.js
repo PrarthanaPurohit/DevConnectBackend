@@ -11,7 +11,14 @@ const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
 
 //check withing every route one by one
-
+app.use(
+  cors({
+    origin: "https://dev-connect-frontend-theta.vercel.app",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 
 app.use(express.json());
