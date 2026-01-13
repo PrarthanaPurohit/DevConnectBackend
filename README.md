@@ -1,6 +1,4 @@
-
-# DevConnect
->>>>>>> cdb0b6b4b22c45924efeede4bfa387d84eae9eb7
+# DevConnect Backend
 
 A developer networking platform backend API that enables developers to connect, interact, and build professional relationships - think Tinder, but for developers!
 
