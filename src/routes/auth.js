@@ -31,9 +31,14 @@ authRouter.post("/signup", async (req, res) => {
     const token = await savedUser.getJWT();
 
     //Add the cookie to token & send the response back to user
+    //1 day
     res.cookie("token", token, {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    }); //1 day
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+});
+
 
     res.json({ message: "User created successfully", data: savedUser });
   } catch (err) {
@@ -59,9 +64,16 @@ authRouter.post("/login", async (req, res) => {
       const token = await user.getJWT();
 
       //Add the cookie to token & send the response back to user
+  
+      
       res.cookie("token", token, {
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       }); //1 day
+
+
       res.send(user);
     } else {
       throw new Error("Invalid password or emailId");

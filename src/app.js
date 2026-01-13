@@ -18,6 +18,11 @@ app.use(cors(
   }
 ));
 app.use(express.json()); //parsing json request body
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 
 
 
