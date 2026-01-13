@@ -14,16 +14,9 @@ const paymentRouter = require("./routes/payment");
 
 
 
-app.use(cors(corsOptions));
 app.use(express.json());
 
-// ✅ SAFE preflight handler (NO ROUTE BREAK)
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-  next();
-});
+
 
 
 
