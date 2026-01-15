@@ -9,6 +9,7 @@ A developer networking platform backend API that enables developers to connect, 
 - **Connection System**: Send, accept, or reject connection requests between developers
 - **User Discovery**: Browse and discover other developers on the platform
 - **Payment Integration**: Razorpay integration for premium features
+- **Real-time Chat**: Instant messaging between connected users powered by Socket.io
 - **CORS Enabled**: Ready for frontend integration
 
 ## Tech Stack
@@ -76,8 +77,23 @@ The server will run on `http://localhost:3000`
 - `GET /user/connections` - View accepted connections
 - `GET /user/feed` - Discover new developers
 
+### Chat
+- `GET /chat/:targetUserId` - Get chat history with a specific user (Supports pagination: `?limit=20&before=TIMESTAMP`)
+
 ### Payments
-- Payment endpoints for premium features
+- `POST /payment/create` - Create payment order (Placeholder)
+
+## Socket.io Events
+
+### Client Emits
+- `joinChat` - Join a private chat room
+  - Payload: `{ targetUserId: "..." }`
+- `sendMessage` - Send a message to a friend
+  - Payload: `{ targetUserId: "...", text: "..." }`
+
+### Server Emits
+- `messageReceived` - Received when a new message comes in
+  - Payload: `{ text: "...", senderId: "...", senderName: "...", timestamp: ... }`
 
 ## User Schema
 
@@ -94,6 +110,20 @@ The server will run on `http://localhost:3000`
   skills: [String]
 }
 ```
+
+## Chat Schema
+
+```javascript
+{
+  participants: [{ type: ObjectId, ref: 'User' }],
+  messages: [{
+    senderId: { type: ObjectId, ref: 'User' },
+    text: String,
+    createdAt: Date
+  }]
+}
+```
+
 
 ## Connection Request Schema
 
@@ -115,7 +145,12 @@ The server will run on `http://localhost:3000`
 
 ## CORS Configuration
 
-The API is configured to accept requests from `http://localhost:5173` (default Vite dev server). Update the CORS settings in `src/app.js` to match your frontend URL.
+The API is configured to accept requests from:
+- `http://localhost:5173` (Local Development)
+- `https://dev-connect-frontend-theta.vercel.app` (Production)
+
+Allowed Methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`
+Update the CORS settings in `src/app.js` if your frontend URL changes.
 
 ## Development
 
