@@ -13,7 +13,7 @@ const getSecretRoomId = (userId, targetUserId) =>
 const initializeSocket = (server) => {
   const io = socketIO(server, {
     cors: {
-      origin: "https://dev-connect-frontend-theta.vercel.app/",
+      origin: "https://dev-connect-frontend-theta.vercel.app",
       credentials: true,
     },
   });
