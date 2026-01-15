@@ -15,7 +15,7 @@ const initializeSocket = require("./utils/socket");
 //check withing every route one by one
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://dev-connect-frontend-theta.vercel.app/",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
