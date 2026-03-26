@@ -2,6 +2,11 @@
 
 A developer networking platform backend API that enables developers to connect, interact, and build professional relationships - think Tinder, but for developers!
 
+## Deploy URL
+
+Frontend: https://dev-connect-frontend-theta.vercel.app/login  
+Backend: https://devconnectbackend-aryy.onrender.com
+
 ## Features
 
 - **User Authentication**: Secure signup/login with JWT tokens and bcrypt password hashing
@@ -162,6 +167,4 @@ npm run dev  # Runs with nodemon for auto-reload
 
 Prarthana Purohit
 
-## License
 
-ISC
