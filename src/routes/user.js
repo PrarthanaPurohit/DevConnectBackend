@@ -15,7 +15,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
         }).populate('fromUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about", "skills"]);  //using ref
         res.json({
             message: "Connection requests found",
-            data: connectionRequests
+            data: connectionRequests.filter((row) => row.fromUserId) // skip requests from deleted users
         });
     } catch (err) {
         res.status(500).send("Error: " + err.message);
@@ -36,7 +36,9 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         .populate('toUserId', ["firstName", "lastName", "age", "gender","photoUrl", "about", "skills"]);  //using ref;
 
         //get only the connected user's info
-        const data = connectionRequests.map((row) => {
+        const data = connectionRequests
+        .filter((row) => row.fromUserId && row.toUserId) // skip rows with deleted users
+        .map((row) => {
         if(row.fromUserId._id.equals(loggedInUser._id)){
             return row.toUserId;
         }   
